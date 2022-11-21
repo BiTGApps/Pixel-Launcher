@@ -1,0 +1,173 @@
+name: BiTGApps Build
+
+on:
+  workflow_dispatch:
+
+env:
+  TOKEN: ${{ secrets.TOKEN }}
+  RELEASE: v1.5
+
+jobs:
+  build:
+    if: github.repository_owner == 'BiTGApps'
+    runs-on: ubuntu-latest
+
+    steps:
+       - name: Initial Setup
+         uses: actions/checkout@v3
+
+       - name: Create BiTGApps
+         run: |
+           rm -rf BiTGApps
+           mkdir BiTGApps
+           install -d out
+
+       - name: Clone Build Sources
+         run: |
+           git clone https://github.com/BiTGApps/Pixel-Launcher BiTGApps/Launcher-11.0-$RELEASE
+           git clone https://github.com/BiTGApps/Pixel-Launcher BiTGApps/Launcher-12.0-$RELEASE
+           git clone https://github.com/BiTGApps/Pixel-Launcher BiTGApps/Launcher-12.1-$RELEASE
+           git clone https://github.com/BiTGApps/Pixel-Launcher BiTGApps/Launcher-13.0-$RELEASE
+
+       - name: Create Sources
+         run: |
+           mkdir BiTGApps/sources
+
+       - name: Clone Package Sources
+         run: |
+           git clone https://github.com/BiTGApps/launcher-sources BiTGApps/sources/launcher-sources
+
+       - name: Initialize Package Sources
+         run: |
+           cp -rf BiTGApps/sources/launcher-sources/30 BiTGApps/Launcher-11.0-$RELEASE
+           cp -rf BiTGApps/sources/launcher-sources/31 BiTGApps/Launcher-12.0-$RELEASE
+           cp -rf BiTGApps/sources/launcher-sources/32 BiTGApps/Launcher-12.1-$RELEASE
+           cp -rf BiTGApps/sources/launcher-sources/33 BiTGApps/Launcher-13.0-$RELEASE
+
+       - name: Remove Package Sources
+         run: |
+           rm -rf BiTGApps/sources
+
+       - name: Download ZIP Signing Tool
+         run: |
+           wget https://github.com/BiTGApps/BiTGApps/raw/master/tools/zipsigner/zipsigner.jar
+
+       - name: Build Red Velvet Cake Launcher
+         run: |
+           cd BiTGApps/Launcher-11.0-$RELEASE
+           . envsetup.sh && rm -rf envsetup.sh
+           cp -f 30/priv-app/DPS.tar.xz zip/core
+           cp -f 30/priv-app/Launcher.tar.xz zip/core
+           cp -f 30/priv-app/QAWallet.tar.xz zip/core
+           cp -f 30/priv-app/WallPicker.tar.xz zip/core
+           cp -f 30/overlay/Launcher.tar.xz zip/overlay
+           cp -f 30/etc/Firmware.tar.xz zip
+           cp -f 30/etc/Permissions.tar.xz zip
+           rm -rf 30 && zip -qr9 Launcher-11.0-$RELEASE.zip * && cd ../..
+           cp -f BiTGApps/Launcher-11.0-$RELEASE/Launcher-11.0-$RELEASE.zip out
+
+       - name: Sign Red Velvet Cake Launcher
+         run: |
+           sudo java -jar zipsigner.jar out/Launcher-11.0-$RELEASE.zip out/Launcher-11.0-$RELEASE-Signed.zip
+           rm -rf out/Launcher-11.0-$RELEASE.zip && mv -f out/Launcher-11.0-$RELEASE-Signed.zip out/Launcher-11.0-$RELEASE.zip
+
+       - name: Build Snow Cone Launcher
+         run: |
+           cd BiTGApps/Launcher-12.0-$RELEASE
+           . envsetup.sh && rm -rf envsetup.sh
+           cp -f 31/priv-app/DPS.tar.xz zip/core
+           cp -f 31/priv-app/Launcher.tar.xz zip/core
+           cp -f 31/priv-app/QAWallet.tar.xz zip/core
+           cp -f 31/priv-app/WallPicker.tar.xz zip/core
+           cp -f 31/overlay/Launcher.tar.xz zip/overlay
+           cp -f 31/overlay/PixelConfig.tar.xz zip/overlay
+           cp -f 31/overlay/PixelFont.tar.xz zip/overlay
+           cp -f 31/overlay/PixelRecent.tar.xz zip/overlay
+           cp -f 31/overlay/PixelUIGX.tar.xz zip/overlay
+           cp -f 31/etc/Firmware.tar.xz zip
+           cp -f 31/etc/Permissions.tar.xz zip
+           rm -rf 31 && zip -qr9 Launcher-12.0-$RELEASE.zip * && cd ../..
+           cp -f BiTGApps/Launcher-12.0-$RELEASE/Launcher-12.0-$RELEASE.zip out
+
+       - name: Sign Snow Cone Launcher
+         run: |
+           sudo java -jar zipsigner.jar out/Launcher-12.0-$RELEASE.zip out/Launcher-12.0-$RELEASE-Signed.zip
+           rm -rf out/Launcher-12.0-$RELEASE.zip && mv -f out/Launcher-12.0-$RELEASE-Signed.zip out/Launcher-12.0-$RELEASE.zip
+
+       - name: Build Snow Cone SL Launcher
+         run: |
+           cd BiTGApps/Launcher-12.1-$RELEASE
+           . envsetup.sh && rm -rf envsetup.sh
+           cp -f 32/priv-app/DPS.tar.xz zip/core
+           cp -f 32/priv-app/Launcher.tar.xz zip/core
+           cp -f 32/priv-app/QAWallet.tar.xz zip/core
+           cp -f 32/priv-app/WallPicker.tar.xz zip/core
+           cp -f 32/overlay/IconPack.tar.xz zip/overlay
+           cp -f 32/overlay/Launcher.tar.xz zip/overlay
+           cp -f 32/overlay/PixelConfig.tar.xz zip/overlay
+           cp -f 32/overlay/PixelFont.tar.xz zip/overlay
+           cp -f 32/overlay/PixelRecent.tar.xz zip/overlay
+           cp -f 32/overlay/PixelUIGX.tar.xz zip/overlay
+           cp -f 32/etc/Firmware.tar.xz zip
+           cp -f 32/etc/Permissions.tar.xz zip
+           rm -rf 32 && zip -qr9 Launcher-12.1-$RELEASE.zip * && cd ../..
+           cp -f BiTGApps/Launcher-12.1-$RELEASE/Launcher-12.1-$RELEASE.zip out
+
+       - name: Sign Snow Cone SL Launcher
+         run: |
+           sudo java -jar zipsigner.jar out/Launcher-12.1-$RELEASE.zip out/Launcher-12.1-$RELEASE-Signed.zip
+           rm -rf out/Launcher-12.1-$RELEASE.zip && mv -f out/Launcher-12.1-$RELEASE-Signed.zip out/Launcher-12.1-$RELEASE.zip
+
+       - name: Build Tiramisu Launcher
+         run: |
+           cd BiTGApps/Launcher-13.0-$RELEASE
+           . envsetup.sh && rm -rf envsetup.sh
+           cp -f 33/priv-app/DPS.tar.xz zip/core
+           cp -f 33/priv-app/Launcher.tar.xz zip/core
+           cp -f 33/priv-app/QAWallet.tar.xz zip/core
+           cp -f 33/priv-app/WallPicker.tar.xz zip/core
+           cp -f 33/overlay/IconPack.tar.xz zip/overlay
+           cp -f 33/overlay/Launcher.tar.xz zip/overlay
+           cp -f 33/overlay/PixelConfig.tar.xz zip/overlay
+           cp -f 33/overlay/PixelFont.tar.xz zip/overlay
+           cp -f 33/overlay/PixelRecent.tar.xz zip/overlay
+           cp -f 33/overlay/PixelUIGX.tar.xz zip/overlay
+           cp -f 33/etc/Firmware.tar.xz zip
+           cp -f 33/etc/Permissions.tar.xz zip
+           rm -rf 33 && zip -qr9 Launcher-13.0-$RELEASE.zip * && cd ../..
+           cp -f BiTGApps/Launcher-13.0-$RELEASE/Launcher-13.0-$RELEASE.zip out
+
+       - name: Sign Tiramisu Launcher
+         run: |
+           sudo java -jar zipsigner.jar out/Launcher-13.0-$RELEASE.zip out/Launcher-13.0-$RELEASE-Signed.zip
+           rm -rf out/Launcher-13.0-$RELEASE.zip && mv -f out/Launcher-13.0-$RELEASE-Signed.zip out/Launcher-13.0-$RELEASE.zip
+
+       - name: Github Release CLI
+         run: |
+           npm install -g github-release-cli
+
+       - name: Release Signed Package
+         env:
+           PACKAGE: false
+         run: |
+           github-release upload \
+           --owner "BiTGApps" \
+           --repo "Pixel-Launcher" \
+           --token "$TOKEN" \
+           --tag "${RELEASE}" \
+           --release-name "BiTGApps ${RELEASE}" \
+           "out/Launcher-11.0-$RELEASE.zip" \
+           "out/Launcher-12.0-$RELEASE.zip" \
+           "out/Launcher-12.1-$RELEASE.zip" \
+           "out/Launcher-13.0-$RELEASE.zip"
+
+       - name: Upload Build Artifact
+         if: ${{ env.PACKAGE == 'true' }}
+         uses: actions/upload-artifact@v3
+         with:
+           name: BiTGApps-Build
+           path: |
+             out/Launcher-11.0-$RELEASE.zip
+             out/Launcher-12.0-$RELEASE.zip
+             out/Launcher-12.1-$RELEASE.zip
+             out/Launcher-13.0-$RELEASE.zip
