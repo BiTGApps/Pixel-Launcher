@@ -52,7 +52,7 @@ jobs:
          run: |
            wget https://github.com/BiTGApps/BiTGApps/raw/master/tools/zipsigner/zipsigner.jar
 
-       - name: Build Red Velvet Cake Launcher
+       - name: Build RedVelvetCake Launcher
          run: |
            cd BiTGApps/Launcher-11.0-$RELEASE
            . envsetup.sh && rm -rf envsetup.sh
@@ -66,12 +66,12 @@ jobs:
            rm -rf 30 && zip -qr9 Launcher-11.0-$RELEASE.zip * && cd ../..
            cp -f BiTGApps/Launcher-11.0-$RELEASE/Launcher-11.0-$RELEASE.zip out
 
-       - name: Sign Red Velvet Cake Launcher
+       - name: Sign RedVelvetCake Launcher
          run: |
            sudo java -jar zipsigner.jar out/Launcher-11.0-$RELEASE.zip out/Launcher-11.0-$RELEASE-Signed.zip
            rm -rf out/Launcher-11.0-$RELEASE.zip && mv -f out/Launcher-11.0-$RELEASE-Signed.zip out/Launcher-11.0-$RELEASE.zip
 
-       - name: Build Snow Cone Launcher
+       - name: Build SnowCone Launcher
          run: |
            cd BiTGApps/Launcher-12.0-$RELEASE
            . envsetup.sh && rm -rf envsetup.sh
@@ -89,12 +89,12 @@ jobs:
            rm -rf 31 && zip -qr9 Launcher-12.0-$RELEASE.zip * && cd ../..
            cp -f BiTGApps/Launcher-12.0-$RELEASE/Launcher-12.0-$RELEASE.zip out
 
-       - name: Sign Snow Cone Launcher
+       - name: Sign SnowCone Launcher
          run: |
            sudo java -jar zipsigner.jar out/Launcher-12.0-$RELEASE.zip out/Launcher-12.0-$RELEASE-Signed.zip
            rm -rf out/Launcher-12.0-$RELEASE.zip && mv -f out/Launcher-12.0-$RELEASE-Signed.zip out/Launcher-12.0-$RELEASE.zip
 
-       - name: Build Snow Cone SL Launcher
+       - name: Build SnowCone Launcher
          run: |
            cd BiTGApps/Launcher-12.1-$RELEASE
            . envsetup.sh && rm -rf envsetup.sh
@@ -113,7 +113,7 @@ jobs:
            rm -rf 32 && zip -qr9 Launcher-12.1-$RELEASE.zip * && cd ../..
            cp -f BiTGApps/Launcher-12.1-$RELEASE/Launcher-12.1-$RELEASE.zip out
 
-       - name: Sign Snow Cone SL Launcher
+       - name: Sign SnowCone Launcher
          run: |
            sudo java -jar zipsigner.jar out/Launcher-12.1-$RELEASE.zip out/Launcher-12.1-$RELEASE-Signed.zip
            rm -rf out/Launcher-12.1-$RELEASE.zip && mv -f out/Launcher-12.1-$RELEASE-Signed.zip out/Launcher-12.1-$RELEASE.zip
