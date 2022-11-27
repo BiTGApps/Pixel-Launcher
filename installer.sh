@@ -113,6 +113,7 @@ build_defaults() {
   # Create links
   TMP_SYS="$UNZIP_DIR/tmp_sys"
   TMP_PRIV="$UNZIP_DIR/tmp_priv"
+  TMP_SYSCONFIG="$UNZIP_DIR/tmp_config"
   TMP_PERMISSION="$UNZIP_DIR/tmp_perm"
   TMP_FIRMWARE="$UNZIP_DIR/tmp_ware"
   TMP_OVERLAY="$UNZIP_DIR/tmp_overlay"
@@ -443,6 +444,18 @@ pkg_TMPPriv() {
   done
 }
 
+pkg_TMPConfig() {
+  file_list="$(find "$TMP_SYSCONFIG/" -mindepth 1 -type f | cut -d/ ${DEST})"
+  dir_list="$(find "$TMP_SYSCONFIG/" -mindepth 1 -type d | cut -d/ ${DEST})"
+  for file in $file_list; do
+    install -D "$TMP_SYSCONFIG/${file}" "$SYSTEM_ETC_CONFIG/${file}"
+    chmod 0644 "$SYSTEM_ETC_CONFIG/${file}"
+  done
+  for dir in $dir_list; do
+    chmod 0755 "$SYSTEM_ETC_CONFIG/${dir}"
+  done
+}
+
 pkg_TMPPerm() {
   file_list="$(find "$TMP_PERMISSION/" -mindepth 1 -type f | cut -d/ ${DEST})"
   dir_list="$(find "$TMP_PERMISSION/" -mindepth 1 -type d | cut -d/ ${DEST})"
@@ -508,6 +521,7 @@ sdk_v25_install() {
        zip/core/Launcher.tar.xz
        zip/core/QAWallet.tar.xz
        zip/core/WallPicker.tar.xz
+       zip/Sysconfig.tar.xz
        zip/Permissions.tar.xz
        zip/Firmware.tar.xz
        zip/overlay/Launcher.tar.xz
@@ -527,6 +541,7 @@ sdk_v25_install() {
   tar -xf $ZIP_FILE/core/Launcher.tar.xz -C $TMP_PRIV
   tar -xf $ZIP_FILE/core/QAWallet.tar.xz -C $TMP_PRIV
   tar -xf $ZIP_FILE/core/WallPicker.tar.xz -C $TMP_PRIV
+  tar -xf $ZIP_FILE/Sysconfig.tar.xz -C $TMP_SYSCONFIG
   tar -xf $ZIP_FILE/Permissions.tar.xz -C $TMP_PERMISSION
   tar -xf $ZIP_FILE/Firmware.tar.xz -C $TMP_FIRMWARE
   tar -xf $ZIP_FILE/overlay/Launcher.tar.xz -C $TMP_OVERLAY
@@ -536,6 +551,7 @@ sdk_v25_install() {
   tar -xf $ZIP_FILE/overlay/PixelUIGX.tar.xz -C $TMP_OVERLAY 2>/dev/null
   tar -xf $ZIP_FILE/overlay/IconPack.tar.xz -C $TMP_OVERLAY 2>/dev/null
   pkg_TMPPriv
+  pkg_TMPConfig
   pkg_TMPPerm
   pkg_TMPWare
   pkg_TMPOverlay

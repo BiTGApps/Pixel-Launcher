@@ -62,6 +62,7 @@ jobs:
            cp -f 30/priv-app/WallPicker.tar.xz zip/core
            cp -f 30/overlay/Launcher.tar.xz zip/overlay
            cp -f 30/etc/Firmware.tar.xz zip
+           cp -f 30/etc/Sysconfig.tar.xz zip
            cp -f 30/etc/Permissions.tar.xz zip
            rm -rf 30 && zip -qr9 Launcher-11.0-$RELEASE.zip * && cd ../..
            cp -f BiTGApps/Launcher-11.0-$RELEASE/Launcher-11.0-$RELEASE.zip out
@@ -85,6 +86,7 @@ jobs:
            cp -f 31/overlay/PixelRecent.tar.xz zip/overlay
            cp -f 31/overlay/PixelUIGX.tar.xz zip/overlay
            cp -f 31/etc/Firmware.tar.xz zip
+           cp -f 31/etc/Sysconfig.tar.xz zip
            cp -f 31/etc/Permissions.tar.xz zip
            rm -rf 31 && zip -qr9 Launcher-12.0-$RELEASE.zip * && cd ../..
            cp -f BiTGApps/Launcher-12.0-$RELEASE/Launcher-12.0-$RELEASE.zip out
@@ -109,6 +111,7 @@ jobs:
            cp -f 32/overlay/PixelRecent.tar.xz zip/overlay
            cp -f 32/overlay/PixelUIGX.tar.xz zip/overlay
            cp -f 32/etc/Firmware.tar.xz zip
+           cp -f 32/etc/Sysconfig.tar.xz zip
            cp -f 32/etc/Permissions.tar.xz zip
            rm -rf 32 && zip -qr9 Launcher-12.1-$RELEASE.zip * && cd ../..
            cp -f BiTGApps/Launcher-12.1-$RELEASE/Launcher-12.1-$RELEASE.zip out
@@ -133,6 +136,7 @@ jobs:
            cp -f 33/overlay/PixelRecent.tar.xz zip/overlay
            cp -f 33/overlay/PixelUIGX.tar.xz zip/overlay
            cp -f 33/etc/Firmware.tar.xz zip
+           cp -f 33/etc/Sysconfig.tar.xz zip
            cp -f 33/etc/Permissions.tar.xz zip
            rm -rf 33 && zip -qr9 Launcher-13.0-$RELEASE.zip * && cd ../..
            cp -f BiTGApps/Launcher-13.0-$RELEASE/Launcher-13.0-$RELEASE.zip out

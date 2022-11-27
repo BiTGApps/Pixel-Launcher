@@ -27,6 +27,7 @@ priv-app/Launcher/Launcher.apk
 priv-app/QAWallet/QAWallet.apk
 priv-app/WallPicker/WallPicker.apk
 etc/permissions/launcher.xml
+etc/sysconfig/overlays.xml
 product/overlay/Launcher.apk
 product/overlay/PixelConfig.apk
 product/overlay/PixelFont.apk
