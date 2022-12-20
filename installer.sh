@@ -333,11 +333,11 @@ mount_all() {
   done
   mount -o remount,rw -t auto / > /dev/null 2>&1
   ui_print "- Mounting /system"
-  if [ "$(grep -w -o '/system' /proc/mounts)" ]; then
+  if [ "$(grep -wo '/system' /proc/mounts)" ]; then
     mount -o remount,rw -t auto /system > /dev/null 2>&1
     is_mounted /system || on_abort "! Cannot mount /system"
   fi
-  if [ "$(grep -w -o '/system_root' /proc/mounts)" ]; then
+  if [ "$(grep -wo '/system_root' /proc/mounts)" ]; then
     mount -o remount,rw -t auto /system_root > /dev/null 2>&1
     is_mounted /system_root || on_abort "! Cannot mount /system_root"
   fi
@@ -492,7 +492,7 @@ pkg_TMPOverlay() {
   done
 }
 
-is_uninstaller() {
+remove_default() {
   rm -rf $SYSTEM_PRIV_APP/DPS
   rm -rf $SYSTEM_PRIV_APP/Launcher
   rm -rf $SYSTEM_PRIV_APP/QAWallet
@@ -504,11 +504,11 @@ is_uninstaller() {
   rm -rf $SYSTEM_OVERLAY/PixelRecent.apk
   rm -rf $SYSTEM_OVERLAY/PixelUIGX.apk
   rm -rf $SYSTEM_OVERLAY/IconPack.apk
-  # Create DPS Firmware
-  install -d $SYSTEM_FIRMWARE
 }
 
 sdk_v25_install() {
+  # Create DPS Firmware
+  install -d $SYSTEM_FIRMWARE
   # Dedicated V3 Partitions
   P="/product /system_ext"
   # Remove Pixel Launcher
@@ -556,7 +556,7 @@ sdk_v25_install() {
   pkg_TMPWare
   pkg_TMPOverlay
   # Purge runtime permissions
-  rm -rf $(find /data -iname "runtime-permissions.xml")
+  rm -rf $(find /data -type f -iname "runtime-permissions.xml")
 }
 
 backup_script() {
@@ -618,7 +618,7 @@ post_install() {
   build_defaults
   mk_component
   system_layout
-  is_uninstaller
+  remove_default
   sdk_v25_install
   backup_script
   on_installed
