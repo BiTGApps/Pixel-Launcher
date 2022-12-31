@@ -20,4 +20,13 @@ print_title() {
   ui_print "$BAR"
 }
 
+list_files() {
+cat <<EOF
+DPS
+Launcher
+QAWallet
+WallPicker
+EOF
+}
+
 ch_con() { chcon -h u:object_r:${1}_file:s0 "$2"; }
